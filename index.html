@@ -783,139 +783,209 @@ document.addEventListener("DOMContentLoaded", function () {
 </style>
        
 
-   <div class="transport-info">
-    <h2 class="title">臺北市立懷愛館</h2>
-    <p class="subtitle">懷恩專車＆停車資訊</p>
+     <!-- 交通資訊區塊（圖文整合） -->
+<section id="transport-info" class="transport-section">
+  <h2><strong>交通資訊</strong></h2>
 
-    <!-- 圖片展示 -->
-    <div class="image-gallery">
-        <img src="image/交通00004.GIF" alt="S31" class="gallery-img" aria-label="交通指引" loading="lazy">
-        <img src="image/交通00005.GIF" alt="S32" class="gallery-img" aria-label="交通指引" loading="lazy">
-        <img src="image/交通00003.GIF" alt="S33" class="gallery-img" aria-label="交通指引" loading="lazy">
-        <img src="image/交通00002.GIF" alt="S34" class="gallery-img" aria-label="交通指引" loading="lazy">
-        <img src="image/交通00001.GIF" alt="S35" class="gallery-img" aria-label="交通指引" loading="lazy">
-        <img src="image/交通00007.JPG" alt="搭車資訊" class="gallery-img" aria-label="搭車資訊" loading="lazy">
-        <img src="image/交通00008.JPG" alt="交通指引" class="gallery-img" aria-label="交通指引" loading="lazy">
-        <img src="image/交通00009.JPG" alt="指引圖" class="gallery-img" aria-label="指引圖" loading="lazy">
-        <img src="image/交通00006.JPG" alt="停車資訊" class="gallery-img" aria-label="停車資訊" loading="lazy">
+  <!-- 基本交通文字資訊 -->
+  <div class="transport-details">
+    <div class="transport-item">
+      <h3>📍 新北市立殯儀館</h3>
+      <p><strong>地址：</strong>220036 新北市板橋區中正路560號</p>
     </div>
-</div>
+    <div class="transport-item">
+      <h4>🚍 公車資訊</h4>
+      <p><strong>新海橋頭站：</strong>658、857、橘5</p>
+      <p><strong>新海抽水站：</strong>810、786</p>
+      <p>🧍‍♂️ 步行約 3 分鐘即可到達</p>
+    </div>
+    <div class="transport-item">
+      <a class="map-link" href="https://maps.app.goo.gl/hLfa9ZgUqqhEayK6A?g_st=ipc" target="_blank">
+        ➤ 點我開啟 Google 地圖
+      </a>
+    </div>
+  </div>
+
+  <!-- 圖片展示區 -->
+  <div class="transport-image-area">
+    <h2 class="title">殯儀館導引圖與停車資訊</h2>
+    <p class="subtitle">點擊圖片可放大查看</p>
+    <div class="image-gallery">
+      <img src="IMG_6325.png" alt="殯儀館資訊" class="gallery-img" loading="lazy">
+      <img src="image/祥安資訊-板殯.png" alt="停車地圖" class="gallery-img" loading="lazy">
+    </div>
+  </div>
+</section>
+
+        <style>
+ .transport-section {
+  background-color: #f9f9f9;
+  padding: 30px 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  max-width: 900px;
+  margin: 50px auto;
+  font-family: 'Noto Serif', 'MingLiU', serif;
+}
+
+.transport-section h2 {
+  font-size: 26px;
+  margin-bottom: 25px;
+  color: #333;
+  text-align: center;
+}
+
+.transport-details {
+  text-align: left;
+  line-height: 1.8;
+  margin-bottom: 30px;
+}
+
+.transport-item {
+  margin-bottom: 20px;
+}
+
+.transport-item h3,
+.transport-item h4 {
+  font-size: 20px;
+  margin-bottom: 8px;
+  color: #444;
+}
+
+.transport-item p {
+  font-size: 16px;
+  margin: 4px 0;
+  color: #222;
+}
+
+.map-link {
+  display: inline-block;
+  margin-top: 10px;
+  font-weight: bold;
+  color: #005cbf;
+  font-size: 16px;
+  text-decoration: none;
+  border: 1px solid #005cbf;
+  padding: 8px 16px;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+
+.map-link:hover {
+  background-color: #005cbf;
+  color: #fff;
+}
+
+/* 圖片畫廊樣式 */
+.transport-image-area {
+  text-align: center;
+}
+
+.transport-image-area .title {
+  font-family: 'Arial', sans-serif;
+  font-size: 23px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.transport-image-area .subtitle {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.image-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 15px;
+  justify-items: center;
+}
+
+.gallery-img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.gallery-img:hover {
+  transform: scale(1.08);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* 手機適應 */
+@media (max-width: 600px) {
+  .gallery-img {
+    width: 90%;
+  }
+
+  .transport-section h2 {
+    font-size: 22px;
+  }
+}
+            </style>
+
+  <!-- 燈箱腳本 -->
+<script>
+  window.addEventListener("DOMContentLoaded", () => {
+    const galleryImages = document.querySelectorAll(".gallery-img");
+
+    galleryImages.forEach(img => {
+      img.addEventListener("click", function () {
+        const lightbox = document.createElement("div");
+        lightbox.classList.add("lightbox");
+
+        const lightboxImg = document.createElement("img");
+        lightboxImg.src = this.src;
+        lightboxImg.alt = this.alt;
+
+        lightbox.appendChild(lightboxImg);
+        document.body.appendChild(lightbox);
+
+        // 點擊畫面任意處關閉
+        lightbox.addEventListener("click", () => {
+          lightbox.remove();
+        });
+      });
+    });
+  });
+</script>
 
 <style>
-    :root {
-        --primary-bg-color: #f9f9f9;
-        --title-color: #333;
-        --subtitle-color: #555;
-        --image-border-radius: 10px;
-        --hover-scale: 1.08;
-        --transition-duration: 0.3s;
-        --box-shadow: rgba(0, 0, 0, 0.1) 0 6px 12px;
-    }
+  .lightbox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: fadeIn 0.3s ease-in-out;
+}
 
-    /* 整體容器 */
-    .transport-info {
-        padding: 20px;
-        background-color: var(--primary-bg-color);
-        border-radius: var(--image-border-radius);
-        margin-top: 20px;
-        text-align: center;
-        box-shadow: var(--box-shadow);
-        max-width: 900px;
-        margin-left: auto;
-        margin-right: auto;
-    }
+.lightbox img {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+}
 
-    /* 標題樣式 */
-    .title {
-        font-family: 'Arial', sans-serif;
-        color: var(--title-color);
-        font-size: 23px;
-        font-weight: bold;
-        margin-bottom: 12px;
-        letter-spacing: 1px;
-    }
-
-    /* 副標題樣式 */
-    .subtitle {
-        font-family: 'Arial', sans-serif;
-        color: var(--subtitle-color);
-        font-size: 18px;
-        font-weight: 600;
-        letter-spacing: 0.5px;
-        margin-bottom: 20px;
-    }
-
-    /* 圖片畫廊 */
-    .image-gallery {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-        gap: 15px;
-        justify-items: center;
-    }
-
-    /* 圖片樣式 */
-    .gallery-img {
-        width: 100%;
-        height: auto;
-        border-radius: var(--image-border-radius);
-        transition: transform var(--transition-duration) ease, box-shadow var(--transition-duration) ease;
-        cursor: pointer;
-    }
-
-    /* 懸停效果 */
-    .gallery-img:hover {
-        transform: scale(var(--hover-scale));
-        box-shadow: rgba(0, 0, 0, 0.2) 0 8px 16px;
-    }
-
-    /* 響應式設計：圖片調整 */
-    @media (max-width: 600px) {
-        .gallery-img {
-            width: 90%;
-        }
-    }
-
-    /* 燈箱樣式 */
-    .lightbox {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        background-color: rgba(0, 0, 0, 0.8);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 1000;
-    }
-
-    .lightbox img {
-        max-width: 90%;
-        max-height: 90%;
-        border-radius: 10px;
-    }
-</style>
-
-<script>
-    // 點擊圖片時顯示燈箱
-    document.querySelectorAll(".gallery-img").forEach(img => {
-        img.addEventListener("click", function() {
-            const lightbox = document.createElement("div");
-            lightbox.classList.add("lightbox");
-
-            const lightboxImg = document.createElement("img");
-            lightboxImg.src = this.src;
-
-            lightbox.appendChild(lightboxImg);
-            document.body.appendChild(lightbox);
-
-            // 點擊燈箱時關閉
-            lightbox.addEventListener("click", () => {
-                lightbox.remove();
-            });
-        });
-    });
-</script>
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+    </style>
 
 
 <!-- 页脚 -->

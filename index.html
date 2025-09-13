@@ -945,66 +945,144 @@ document.addEventListener("DOMContentLoaded", function () {
         </div>
     </div>
 
-    <!-- 版權信息 -->
-    <div class="footer-info">
-        <p class="footer-text">
-            <strong>承辦禮儀公司 祥安生命有限公司 ｜ 禮儀師：陳柏元</strong>
-        </p>
-        <p class="footer-text">
-        <strong>© 2025 余龍樹先生 訃告 | <span class="highlight">祥安生命有限公司</span> 版權所有</strong>
-        </p>
-    </div>
+<footer>
+  <!-- 版權信息 -->
+  <div class="footer-info">
+    <p class="footer-text">
+      <strong class="fit-text">承辦禮儀公司 祥安生命有限公司 ｜ 禮儀師：陳柏元</strong>
+    </p>
+    <p class="footer-text">
+      <strong class="fit-text">© 2025 葉旻峰弟兄 訃告 ｜ <span class="highlight">祥安生命有限公司</span> 版權所有</strong>
+    </p>
+  </div>
 </footer>
 
 <style>
-/* 引入字體 */
+/* 引入字體（如你有其他字體來源請保留） */
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&display=swap');
-
-/* 引入辰魚落雁體字體（實際網頁上需有正確字體） */
 @import url('https://fonts.googleapis.com/css2?family=ChenYu&display=swap');
 
-/* 頁腳區塊 */
+/* 容器 */
 .footer-info {
-    text-align: center;
-    font-family: 'ChenYu', serif;
-    background-color: #f9f9f9;
-    border-top: 1px solid #ddd;
-    padding: 20px 10px;
-    margin-top: 40px;
+  text-align: center;
+  font-family: 'ChenYu', serif;
+  background-color: #f9f9f9;
+  border-top: 1px solid #ddd;
+  padding: 20px 10px;
+  margin-top: 40px;
 }
 
-/* 每一行版權文字 */
+/* 每行段落（外殼） */
 .footer-text {
-    display: block;
-    font-size: clamp(14px, 2vw, 18px); /* 自適應大小，手機不會太小，桌機不會太大 */
-    text-align: center;
-    color: #333;
-    line-height: 1.6;
-    margin: 5px 0;
+  display: block;
+  text-align: center;
+  color: #333;
+  line-height: 1.6;
+  margin: 5px 0;
+  /* 不裁切、不要 ellipsis */
+  overflow: visible;
 }
 
-/* 字體加粗 */
-.footer-text strong {
-    font-weight: bold;
+/* 這個是會被 JS 精準調整字級的元素 */
+.footer-text .fit-text {
+  display: inline-block;   /* 方便量測寬度 */
+  white-space: nowrap;     /* 強制一行，不自動換行 */
+  font-weight: 700;
+  /* 初始參考大小（之後由 JS 覆蓋） */
+  font-size: 16px;
 }
 
 /* 顯眼強調色 */
 .highlight {
-    color: #555;
+  color: #555;
 }
 
-/* 響應式設計 */
+/* 手機微調（只是預設參考） */
 @media (max-width: 600px) {
-    .footer-info {
-        padding: 15px 5px;
-    }
-    .footer-text {
-        font-size: 16px;
-    }
+  .footer-info { padding: 15px 6px; }
 }
 </style>
-                
+
+<script>
+(function () {
+  // 設定：最大、最小字級（px），以及精度（px）
+  const MAX_FONT = 22;   // 桌機上可接受的最大字級（你可調）
+  const MIN_FONT = 8;    // 最小字級（若要更小可改）
+  const PRECISION = 0.2; // 二分搜尋的收斂精度（越小越精準但計算多些）
+
+  // 量測並讓單一元素 fit 父容器
+  function fitOne(el) {
+    if (!el || !el.parentElement) return;
+    const parent = el.parentElement;
+    const containerWidth = parent.clientWidth;
+    if (containerWidth <= 0) return;
+
+    // 二分搜尋：找出最大 fontSize 使 elWidth <= containerWidth
+    let low = MIN_FONT;
+    let high = MAX_FONT;
+    // 先設到 high 測一次：如果已經在 high 下就能 fit，就用 high
+    el.style.fontSize = high + "px";
+    let w = el.getBoundingClientRect().width;
+    if (w <= containerWidth) {
+      // still fits at max
+      el.style.fontSize = high + "px";
+      return;
+    }
+
+    // 否則做二分搜尋
+    while (high - low > PRECISION) {
+      const mid = (low + high) / 2;
+      el.style.fontSize = mid + "px";
+      w = el.getBoundingClientRect().width;
+      if (w > containerWidth) {
+        // 太寬，需更小
+        high = mid;
+      } else {
+        // 可以再大一點
+        low = mid;
+      }
+    }
+    // 設成 low（最大可容許的字級）
+    el.style.fontSize = Math.max(MIN_FONT, low) + "px";
+  }
+
+  // 套用到頁內所有 .fit-text
+  function fitAll() {
+    const nodes = document.querySelectorAll('.footer-text .fit-text');
+    nodes.forEach(el => fitOne(el));
+  }
+
+  // 預先等待字型載入，避免測量錯誤
+  function start() {
+    fitAll();
+    // 觀察 footer 容器尺寸變化（更精準），同時保留 window resize 兼容
+    if (window.ResizeObserver) {
+      const ro = new ResizeObserver(() => fitAll());
+      document.querySelectorAll('.footer-info').forEach(n => ro.observe(n));
+    }
+    window.addEventListener('resize', debounce(fitAll, 80));
+  }
+
+  // debounce 小工具
+  function debounce(fn, wait) {
+    let t = null;
+    return function () {
+      clearTimeout(t);
+      t = setTimeout(() => fn.apply(this, arguments), wait);
+    };
+  }
+
+  // 若支援 Font Loading API 就等字體載入再開始（避免字被誤判太長）
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(start).catch(start);
+  } else {
+    // fallback
+    window.addEventListener('load', start);
+  }
+})();
+</script>
               
 </body>
+</div>
 
 </html>
